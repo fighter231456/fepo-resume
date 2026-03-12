@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* 1. สีสำหรับ Light Mode (เทียบเท่าโทน bg-slate-50) */
+:root {
+  --background: #f8fafc; 
+  --foreground: #0f172a;
+}
+
+/* 2. สีสำหรับ Dark Mode (เทียบเท่าโทน bg-slate-950) */
+.dark {
+  --background: #020617;
+  --foreground: #f8fafc;
+}
+
+/* ... ส่วนอื่นๆ ด้านล่างเก็บไว้เหมือนเดิมเป๊ะๆ เลยครับ ... */
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* =========================================
+   Theme Toggle Animation (View Transitions)
+   ========================================= */
+
+/* กำหนดความเร็วและจังหวะของแอนิเมชัน */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.6s; /* ปรับความเร็วตรงนี้ได้เลย (0.6 วิ กำลังสวย) */
+  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1); /* ให้จังหวะมันหน่วงตอนปลายนิดๆ */
+}
+
+/* ตอนที่ธีมใหม่กำลังจะโผล่มา ให้ใช้คีย์เฟรม wipe-in-right */
+::view-transition-new(root) {
+  animation-name: wipe-in-right;
+  z-index: 9999; /* ให้อยู่เลเยอร์บนสุดเสมอ */
+}
+
+/* ตอนที่ธีมเก่ากำลังจะหายไป ให้อยู่นิ่งๆ (เดี๋ยวธีมใหม่จะสไลด์มาทับเอง) */
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+/* สร้างรูปร่างการกวาดหน้าจอ (Clip-path) จากซ้าย (0%) ไปขวา (100%) */
+@keyframes wipe-in-right {
+  from {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+/* (Best Practice) ปิดแอนิเมชันสำหรับผู้ใช้ที่ตั้งค่าลดการเคลื่อนไหวในเครื่อง */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* =========================================
+   Theme Toggle Animation (View Transitions)
+   ========================================= */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 👇 เติม html.theme-transition นำหน้าตรงนี้ */
+html.theme-transition::view-transition-new(root) {
+  animation-name: wipe-in-right;
+  z-index: 9999;
+}
+
+/* 👇 และตรงนี้ด้วยครับ */
+html.theme-transition::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+@keyframes wipe-in-right {
+  from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+  to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* =========================================
+   Language Toggle Animation (Shrink & Grow)
+   ========================================= */
+
+/* =========================================
+   Language Toggle Animation (Slide Up & Fade)
+   ========================================= */
+
+/* 1. ตอนภาษาเก่ากำลังจะหายไป ให้ลอยขึ้นด้านบนและจางหายไป */
+html.lang-transition::view-transition-old(root) {
+  animation: slide-up-out 0.3s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+/* 2. ตอนภาษาใหม่โผล่มา ให้ดันขึ้นมาจากด้านล่างพร้อมกับค่อยๆ ชัดขึ้น */
+html.lang-transition::view-transition-new(root) {
+  animation: slide-up-in 0.3s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+/* --- สร้างคีย์เฟรมการสไลด์ขึ้น (Y-axis) --- */
+@keyframes slide-up-out {
+  to {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-up-in {
+  from {
+    transform: translateY(20px); 
+    opacity: 0;
+  }
+}
