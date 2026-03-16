@@ -18,7 +18,7 @@ export default function About() {
             {/* 💡 คำแนะนำ: เมื่อคุณมีรูปถ่ายใส่สูทหรือเสื้อเชิ้ตดูโปรๆ ให้นำมาใส่ตรงนี้แทน div สีเทานะครับ */}
             <div className="absolute inset-0 bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
               {/* <span className="text-6xl">👨‍💼</span> */}
-              <img src="/mypic4.jpg" alt="Profile" className="w-full h-full object-cover" />
+              <img src="/DSC_7123TT.jpg" alt="Profile" className="w-full h-full object-cover" />
             </div>
           </div>
           
